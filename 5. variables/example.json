@@ -1,0 +1,26 @@
+{
+    "builders": [
+        {
+            "type": "amazon-ebs",
+            "region": "ap-northeast-2",
+            "ami_name": "{{user `ami_name`}}",
+            "source_ami": "ami-04876f29fd3a5e8ba",
+            "instance_type": "{{user `instance_type`}}",
+            "ssh_username": "{{user `ssh_username`}}",
+            "ssh_interface": "public_ip",
+            "vpc_id": "{{user `vpc_id`}}",
+            "subnet_id": "{{user `subnet_id`}}"
+        }
+    ],
+
+    "provisioners": [
+        {
+            "type": "shell",
+            "inline": [
+                "sleep 30",
+                "sudo apt update",
+                "sudo apt install -y nginx"
+            ]
+        }
+    ]
+}

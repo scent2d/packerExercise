@@ -1,0 +1,23 @@
+{
+    "variables": {
+        "ssh_username": "ec2-user",
+        "instance_type": "t2.micro",
+        "vpc_id": "vpc-05d7f0d034b2b6acc",
+        "subent_id": "subnet-046821c93066ea56a",
+        "ami_name": "my-first-ami"
+    },
+
+    "builders": [
+        {
+            "type": "amazon-ebs",
+            "region": "ap-northeast-2",
+            "ami_name": "{{user `ami_name`}}",
+            "source_ami": "ami-0e4a9ad2eb120e054",
+            "instance_type": "{{user `instance_type`}}",
+            "ssh_username": "{{user `ssh_username`}}",
+            "ssh_interface": "public_ip",
+            "vpc_id": "{{user `vpc_id`}}",
+            "subnet_id": "{{user `subnet_id`}}"
+        }
+    ]
+}
