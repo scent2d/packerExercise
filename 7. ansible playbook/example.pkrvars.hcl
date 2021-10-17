@@ -1,0 +1,8 @@
+ssh_username = "ubuntu"
+instance_type = "t2.micro"
+vpc_id = "vpc-05d7f0d034b2b6acc"
+subnet_id = "subnet-046821c93066ea56a"
+source_ami = "ami-04876f29fd3a5e8ba"
+region = "ap-northeast-2"
+env = "test"
+version = "0.3"

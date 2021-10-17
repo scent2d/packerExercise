@@ -1,0 +1,49 @@
+---
+    - hosts: all                                        
+      become: yes
+      tasks:
+        - name: Update APT
+          become: true
+          apt:
+            update_cache: yes
+            cache_valid_time: 3600
+        
+        - name: Install JAVA
+          command: "{{ item }}"         
+          with_items:
+            - sudo apt -y update
+            - sudo apt -y install openjdk-8-jre
+        #   become: true
+        #   apt:
+            # name: "{{ packages }}"
+            # state: present
+        #   vars:
+            # packages:
+            #   - default-jre
+            #   - default-jdk
+            #   - openjdk-8-jre
+            #   - openjdk-8-jdk
+            
+        - name: Download Tomcat
+          get_url:
+            url: https://dlcdn.apache.org/tomcat/tomcat-9/v9.0.54/bin/apache-tomcat-9.0.54.tar.gz
+            dest: /tmp/apache-tomcat-9.0.54.tar.gz
+            mode: '0755'
+            group: ubuntu
+            owner: ubuntu
+
+        - name: Extracting Tomcat             
+          unarchive:
+            src: /tmp/apache-tomcat-9.0.54.tar.gz
+            dest: /opt/
+            remote_src: yes
+
+        - name: Configuring Tomcat
+          command: "{{ item }}"         
+          with_items:
+            - chown -RH ubuntu:ubuntu /opt/apache-tomcat-9.0.54/
+            - chmod +x /opt/apache-tomcat-9.0.54/bin/catalina.sh
+            - chmod +x /opt/apache-tomcat-9.0.54/bin/startup.sh
+ 
+        - name: Starting Tomcat               
+          command: /opt/apache-tomcat-9.0.54/bin/startup.sh   
