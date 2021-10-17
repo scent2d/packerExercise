@@ -24,12 +24,7 @@ build {
     sources = [
         "source.amazon-ebs.ec2_ami"
     ]
-
-    # Provisioner
-    # provisioner "shell" {
-    #     script = "script/setup.sh"
-    # }
-
+    
     provisioner "ansible" {
         playbook_file   = "ansible/playbook.yml"
     }

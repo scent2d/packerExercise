@@ -2,17 +2,35 @@
     - hosts: all                                        
       become: yes
       tasks:
-        - name: Update APT
+        - name: Add apt repository
+          become: true
+          apt_repository:
+            repo: ppa:openjdk-r/ppa
+            state: present
+
+        - name: Update apt
           become: true
           apt:
             update_cache: yes
-            cache_valid_time: 3600
         
-        - name: Install JAVA
-          command: "{{ item }}"         
+        - name: Install apt package
+          become: true
+          apt:
+            name: "{{ item }}"
+            state: present
           with_items:
-            - sudo apt -y update
-            - sudo apt -y install openjdk-8-jre
+            - git
+            - software-properties-common
+            - python3.8
+            - python3-pip
+            - openjdk-8-jdk
+            - openjdk-8-jre
+
+        # - name: Install JAVA
+        #   command: "{{ item }}"         
+        #   with_items:
+        #     - sudo apt -y update
+        #     - sudo apt -y install openjdk-8-jre
         #   become: true
         #   apt:
             # name: "{{ packages }}"
@@ -39,11 +57,12 @@
             remote_src: yes
 
         - name: Configuring Tomcat
+          become: true
           command: "{{ item }}"         
           with_items:
             - chown -RH ubuntu:ubuntu /opt/apache-tomcat-9.0.54/
             - chmod +x /opt/apache-tomcat-9.0.54/bin/catalina.sh
-            - chmod +x /opt/apache-tomcat-9.0.54/bin/startup.sh
- 
-        - name: Starting Tomcat               
-          command: /opt/apache-tomcat-9.0.54/bin/startup.sh   
+            - chmod +x /opt/apache-tomcat-9.0.54/bin/startup.sh 
+
+        # - name : Run Tomcat
+        #   shell: nohup /opt/apache-tomcat-9.0.54/bin/startup.sh &
