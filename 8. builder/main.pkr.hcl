@@ -12,7 +12,7 @@ build {
  * With Name
  */
 build {
-  name    = "fastcampus-packer"
+  name    = "packer"
 
   sources = [
     "source.null.one",
@@ -24,7 +24,7 @@ build {
  * Fill-in
  */
 build {
-  name    = "fastcampus-packer-fill-in"
+  name    = "packer-fill-in"
 
   source "null.one" {
     name = "terraform"
